@@ -1,5 +1,5 @@
 # app/routes/chat.py (라우트 코드 수정)
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models.chat import Chatroom, Message, TradePromise
@@ -59,13 +59,8 @@ def view_chatroom_detail(chatroomid):
     # 권한 확인
     if user_id not in chatroom.participant_ids:
         return jsonify({'message': '조회 권한이 없습니다.'}), 403
-    return jsonify({
-        'chatroomId': chatroom.id,
-        'name': chatroom.name,
-        'participants': chatroom.participant_ids,
-        'lastMessage': chatroom.last_message,
-        'updatedAt': chatroom.updated_at.isoformat()
-    }), 200
+    
+    return render_template('chat.html', room_id=chatroomid)
 
 # 채팅 메시지 목록 조회
 @bp_chat.route('/<int:chatroomid>/messages', methods=['GET'])

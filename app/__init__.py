@@ -11,6 +11,7 @@ from flask_socketio import SocketIO
 load_dotenv()
 
 # 확장 객체 정의
+socket_io = SocketIO(async_mode='threading', cors_allowed_origins="*")
 db = SQLAlchemy()
 jwt = JWTManager()
 migrate = Migrate()
@@ -54,7 +55,7 @@ def create_app():
     app.register_blueprint(bp_chat)
     app.register_blueprint(search_bp)
 
-    socket_io = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
+    
 
     @app.route('/chat/<room_id>')
     def chat(room_id):
